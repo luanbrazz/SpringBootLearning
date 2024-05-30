@@ -26,9 +26,13 @@ public class User implements Serializable {
 
     private String name;
 
+    @Column(name = "email", unique = true)
     private String email;
 
     private String phone;
+
+    @Column(name = "cpf", unique = true)
+    private String CPF;
 
     @Column(name = "dt_subscription")
     private LocalDate dtSubscription = LocalDate.now();

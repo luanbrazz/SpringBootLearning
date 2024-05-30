@@ -1,5 +1,6 @@
 package springbootlearning.service;
 
+import springbootlearning.dto.SubscriptionTypeDto;
 import springbootlearning.model.SubscriptionType;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface SubscriptionTypeService {
 
     SubscriptionType findById(Long id);
 
-    SubscriptionType create(SubscriptionType subscriptionType);
+    SubscriptionType create(SubscriptionTypeDto subscriptionTypeDto);
 
     SubscriptionType update(Long id, SubscriptionType subscriptionType);
 

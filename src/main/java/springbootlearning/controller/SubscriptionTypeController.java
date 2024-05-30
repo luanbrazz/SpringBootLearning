@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springbootlearning.dto.SubscriptionTypeDto;
+import springbootlearning.exception.NotFoundException;
 import springbootlearning.model.SubscriptionType;
 import springbootlearning.service.SubscriptionTypeService;
 
@@ -27,10 +29,11 @@ public class SubscriptionTypeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<SubscriptionType> finfById(@PathVariable Long id) {
-        SubscriptionType subscriptionType = subscriptionTypeService.findById(id);
-        if (subscriptionType == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(subscriptionType);
+            return ResponseEntity.status(HttpStatus.OK).body(subscriptionTypeService.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<SubscriptionType> create(@RequestBody SubscriptionTypeDto dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(subscriptionTypeService.create(dto));
     }
 }
