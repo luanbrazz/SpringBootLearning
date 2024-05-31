@@ -41,4 +41,10 @@ public class SubscriptionTypeController {
     public ResponseEntity<SubscriptionType> update(@PathVariable Long id, @RequestBody SubscriptionTypeDto dto) {
         return ResponseEntity.status(HttpStatus.OK).body(subscriptionTypeService.update(id, dto));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        subscriptionTypeService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 }

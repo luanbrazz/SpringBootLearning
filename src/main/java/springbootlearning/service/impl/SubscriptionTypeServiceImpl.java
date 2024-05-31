@@ -35,11 +35,11 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
             throw new BadRequestException("ID must be null");
         }
         return subscriptionTypeRepository.save(SubscriptionType.builder()
-                        .id(dto.getId())
-                        .name(dto.getName())
-                        .accessMonth(dto.getAccessMonth())
-                        .price(dto.getPrice())
-                        .productKey(dto.getProductKey())
+                .id(dto.getId())
+                .name(dto.getName())
+                .accessMonth(dto.getAccessMonth())
+                .price(dto.getPrice())
+                .productKey(dto.getProductKey())
                 .build());
     }
 
@@ -59,7 +59,8 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
 
     @Override
     public void delete(Long id) {
-
+        this.getSubscriptionType(id);
+        subscriptionTypeRepository.deleteById(id);
     }
 
     private SubscriptionType getSubscriptionType(Long id) {
