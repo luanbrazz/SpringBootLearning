@@ -3,12 +3,14 @@ package springbootlearning.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import springbootlearning.dto.SubscriptionTypeDto;
+import springbootlearning.exception.BadRequestException;
 import springbootlearning.exception.NotFoundException;
 import springbootlearning.model.SubscriptionType;
 import springbootlearning.repository.SubscriptionTypeRepository;
 import springbootlearning.service.SubscriptionTypeService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -36,7 +38,9 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
 
     @Override
     public SubscriptionType create(SubscriptionTypeDto dto) {
-
+        if (Objects.nonNull(dto.getId())) {
+            throw new BadRequestException("ID must be null");
+        }
         return subscriptionTypeRepository.save(SubscriptionType.builder()
                         .id(dto.getId())
                         .name(dto.getName())
