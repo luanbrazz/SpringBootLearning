@@ -26,14 +26,7 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
 
     @Override
     public SubscriptionType findById(Long id) {
-
-        Optional<SubscriptionType> optionalSubscriptionType = subscriptionTypeRepository.findById(id);
-
-        if (!optionalSubscriptionType.isPresent()) {
-            throw new NotFoundException("Subscription type not found");
-        }
-
-        return optionalSubscriptionType.get();
+        return this.getSubscriptionType(id);
     }
 
     @Override
@@ -51,12 +44,30 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
     }
 
     @Override
-    public SubscriptionType update(Long id, SubscriptionType subscriptionType) {
-        return null;
+    public SubscriptionType update(Long id, SubscriptionTypeDto dto) {
+        this.getSubscriptionType(id);
+
+        return subscriptionTypeRepository.save(SubscriptionType.builder()
+                .id(id)
+                .name(dto.getName())
+                .accessMonth(dto.getAccessMonth())
+                .price(dto.getPrice())
+                .productKey(dto.getProductKey())
+                .build());
+
     }
 
     @Override
     public void delete(Long id) {
 
+    }
+
+    private SubscriptionType getSubscriptionType(Long id) {
+        Optional<SubscriptionType> optionalSubscriptionType = subscriptionTypeRepository.findById(id);
+
+        if (!optionalSubscriptionType.isPresent()) {
+            throw new NotFoundException("Subscription type not found");
+        }
+        return optionalSubscriptionType.get();
     }
 }
