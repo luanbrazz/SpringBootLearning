@@ -1,7 +1,9 @@
 package springbootlearning.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
+import springbootlearning.controller.SubscriptionTypeController;
 import springbootlearning.dto.SubscriptionTypeDto;
 import springbootlearning.exception.BadRequestException;
 import springbootlearning.exception.NotFoundException;
@@ -17,6 +19,10 @@ import java.util.Optional;
 @Service
 public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
 
+    private static final String UPDATE_SUBSCRIPTION_TYPE = "updateSubscriptionType";
+    private static final String DELETE_SUBSCRIPTION_TYPE = "deleteSubscriptionType";
+
+
     @Autowired
     private SubscriptionTypeRepository subscriptionTypeRepository;
 
@@ -27,7 +33,16 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
 
     @Override
     public SubscriptionType findById(Long id) {
-        return this.getSubscriptionType(id);
+        return this.getSubscriptionType(id).add(WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder.methodOn(SubscriptionTypeController.class).finfById(id)
+                ).withSelfRel()
+        ).add(WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder.methodOn(SubscriptionTypeController.class).update(id, new SubscriptionTypeDto())
+                ).withRel(UPDATE_SUBSCRIPTION_TYPE)
+        ).add(WebMvcLinkBuilder.linkTo(
+                        WebMvcLinkBuilder.methodOn(SubscriptionTypeController.class).delete(id)
+                ).withRel(DELETE_SUBSCRIPTION_TYPE)
+        );
     }
 
     @Override
