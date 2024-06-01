@@ -20,7 +20,7 @@ public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "users_id")
     private Long id;
 
@@ -32,10 +32,10 @@ public class User implements Serializable {
     private String phone;
 
     @Column(name = "cpf", unique = true)
-    private String CPF;
+    private String cpf;
 
     @Column(name = "dt_subscription")
-    private LocalDate dtSubscription = LocalDate.now();
+    private LocalDate dtSubscription;
 
     @Column(name = "dt_expiration")
     private LocalDate dtExpiration;
