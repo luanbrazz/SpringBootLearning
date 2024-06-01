@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import springbootlearning.dto.SubscriptionTypeDto;
 import springbootlearning.exception.BadRequestException;
 import springbootlearning.exception.NotFoundException;
+import springbootlearning.mapper.SubscriptionTypeMapper;
 import springbootlearning.model.SubscriptionType;
 import springbootlearning.repository.SubscriptionTypeRepository;
 import springbootlearning.service.SubscriptionTypeService;
@@ -34,27 +35,14 @@ public class SubscriptionTypeServiceImpl implements SubscriptionTypeService {
         if (Objects.nonNull(dto.getId())) {
             throw new BadRequestException("ID must be null");
         }
-        return subscriptionTypeRepository.save(SubscriptionType.builder()
-                .id(dto.getId())
-                .name(dto.getName())
-                .accessMonth(dto.getAccessMonth())
-                .price(dto.getPrice())
-                .productKey(dto.getProductKey())
-                .build());
+        return subscriptionTypeRepository.save(SubscriptionTypeMapper.fromDtoToEntity(dto));
     }
 
     @Override
     public SubscriptionType update(Long id, SubscriptionTypeDto dto) {
         this.getSubscriptionType(id);
-
-        return subscriptionTypeRepository.save(SubscriptionType.builder()
-                .id(id)
-                .name(dto.getName())
-                .accessMonth(dto.getAccessMonth())
-                .price(dto.getPrice())
-                .productKey(dto.getProductKey())
-                .build());
-
+        dto.setId(id);
+        return subscriptionTypeRepository.save(SubscriptionTypeMapper.fromDtoToEntity(dto));
     }
 
     @Override
