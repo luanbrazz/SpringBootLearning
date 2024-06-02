@@ -26,4 +26,20 @@ public class SwaggerConfig {
                         .description("Spring Boot Learning Wiki Documentation")
                         .url("https://springshop.wiki.github.org/docs"));
     }
+
+//    @Bean
+//    public GroupedOpenApi publicApi() {
+//        return GroupedOpenApi.builder()
+//                .group("public-api")
+//                .pathsToMatch("/public/**")
+//                .build();
+//    }
+//
+//    @Bean
+//    public GroupedOpenApi adminApi() {
+//        return GroupedOpenApi.builder()
+//                .group("admin-api")
+//                .pathsToMatch("/admin/**")
+//                .build();
+//    }
 }
