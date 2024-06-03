@@ -11,3 +11,19 @@ services:
       MYSQL_DATABASE: DBSpringBootLearning
       MYSQL_USER: appuser
       MYSQL_PASSWORD: apppassword
+    volumes:
+      - mysql_data_container:/data/db
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: appuser
+      MONGO_INITDB_ROOT_PASSWORD: apppassword
+    volumes:
+      - mongo_data_container:/data/db
+volumes:
+  mysql_data_container:
+  mongo_data_container:
