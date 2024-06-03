@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CustomerDto {
 
-    private String cpf;
+    private String id;
 
     private String email;
 
     private String firstName;
 
-    private String id;
-
     private String lastName;
+
+    private String cpf;
 }
