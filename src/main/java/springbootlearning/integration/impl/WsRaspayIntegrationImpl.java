@@ -1,6 +1,7 @@
 package springbootlearning.integration.impl;
 
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,6 +16,18 @@ import springbootlearning.integration.WsRaspayIntegration;
 @Component
 public class WsRaspayIntegrationImpl implements WsRaspayIntegration {
 
+    @Value("${webservices.raspay.host}")
+    private String integrationHost;
+
+    @Value("${webservices.raspay.V1.customer}")
+    private String urlCustomer;
+
+    @Value("${webservices.raspay.V1.order}")
+    private String urlOrder;
+
+    @Value("${webservices.raspay.V1.payment}")
+    private String urlPayment;
+
     private final RestTemplate restTemplate;
     private final HttpHeaders headers;
 
@@ -28,7 +41,7 @@ public class WsRaspayIntegrationImpl implements WsRaspayIntegration {
         try {
             HttpEntity<CustomerDto> request = new HttpEntity<>(customerDto, this.headers);
 
-            ResponseEntity<CustomerDto> response = restTemplate.exchange("http://localhost:8081/ws-raspay/v1/customer",
+            ResponseEntity<CustomerDto> response = restTemplate.exchange(integrationHost + urlCustomer,
                     HttpMethod.POST, request, CustomerDto.class);
             return response.getBody();
         } catch (Exception exception) {
@@ -41,7 +54,7 @@ public class WsRaspayIntegrationImpl implements WsRaspayIntegration {
         try {
             HttpEntity<OrderDto> request = new HttpEntity<>(orderDto, this.headers);
 
-            ResponseEntity<OrderDto> response = restTemplate.exchange("http://localhost:8081/ws-raspay/v1/order",
+            ResponseEntity<OrderDto> response = restTemplate.exchange(integrationHost + urlOrder,
                     HttpMethod.POST, request, OrderDto.class);
             return response.getBody();
         } catch (Exception exception) {
@@ -54,7 +67,7 @@ public class WsRaspayIntegrationImpl implements WsRaspayIntegration {
         try {
             HttpEntity<PaymentDto> request = new HttpEntity<>(paymentDto, this.headers);
 
-            ResponseEntity<Boolean> response = restTemplate.exchange("http://localhost:8081/ws-raspay/v1/payment/credit-card/",
+            ResponseEntity<Boolean> response = restTemplate.exchange(integrationHost + urlPayment,
                     HttpMethod.POST, request, Boolean.class);
             return response.getBody();
         } catch (Exception exception) {
