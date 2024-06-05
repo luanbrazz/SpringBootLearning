@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import springbootlearning.dto.error.ErrorResponseDto;
 import springbootlearning.exception.BadRequestException;
+import springbootlearning.exception.BusinessException;
 import springbootlearning.exception.NotFoundException;
 
 import java.util.Arrays;
@@ -33,6 +34,15 @@ public class ResourceHandler {
                 .message(badRequestException.getMessage())
                 .httpStatus(HttpStatus.BAD_REQUEST)
                 .statusCode(HttpStatus.BAD_REQUEST.value())
+                .build());
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ErrorResponseDto> handleBusinessException(BusinessException businessException) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ErrorResponseDto.builder()
+                .message(businessException.getMessage())
+                .httpStatus(HttpStatus.CONFLICT)
+                .statusCode(HttpStatus.CONFLICT.value())
                 .build());
     }
 
