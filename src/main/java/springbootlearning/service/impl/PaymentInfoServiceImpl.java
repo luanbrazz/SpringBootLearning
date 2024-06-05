@@ -4,12 +4,15 @@ import org.springframework.stereotype.Service;
 import springbootlearning.dto.PaymentProcessDto;
 import springbootlearning.dto.wsraspay.CustomerDto;
 import springbootlearning.dto.wsraspay.OrderDto;
+import springbootlearning.dto.wsraspay.PaymentDto;
 import springbootlearning.exception.BusinessException;
 import springbootlearning.exception.NotFoundException;
 import springbootlearning.integration.WsRaspayIntegration;
 import springbootlearning.mapper.UserPaymentInfoMapper;
+import springbootlearning.mapper.wsraspay.CreditCardMapper;
 import springbootlearning.mapper.wsraspay.CustomerMapper;
 import springbootlearning.mapper.wsraspay.OrderMapper;
+import springbootlearning.mapper.wsraspay.PaymentMapper;
 import springbootlearning.model.User;
 import springbootlearning.model.UserPaymentInfo;
 import springbootlearning.repository.UserPaymentInfoRepository;
@@ -51,9 +54,15 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
         // create the payment request
         OrderDto orderDto = wsRaspayIntegration.createOrder(OrderMapper.buildOrderDto(customerDto.getId(), paymentProcessDto));
 
+        // process payment
+        PaymentDto paymentDto = PaymentMapper.build(customerDto.getId(), orderDto.getId(), CreditCardMapper.build(paymentProcessDto.getUserPaymentInfoDto(), user.getCpf()));
+        Boolean succesPayment = wsRaspayIntegration.processPayment(paymentDto);
 
-        UserPaymentInfo userPaymentInfo = UserPaymentInfoMapper.fromDtoToEntity(paymentProcessDto.getUserPaymentInfoDto(), user);
-        userPaymentInfoRepository.save(userPaymentInfo);
+        if (succesPayment) {
+            UserPaymentInfo userPaymentInfo = UserPaymentInfoMapper.fromDtoToEntity(paymentProcessDto.getUserPaymentInfoDto(), user);
+            userPaymentInfoRepository.save(userPaymentInfo);
+        }
+
         return null;
     }
 }
