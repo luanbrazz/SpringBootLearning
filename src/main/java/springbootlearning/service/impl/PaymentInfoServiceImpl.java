@@ -7,6 +7,7 @@ import springbootlearning.dto.wsraspay.OrderDto;
 import springbootlearning.dto.wsraspay.PaymentDto;
 import springbootlearning.exception.BusinessException;
 import springbootlearning.exception.NotFoundException;
+import springbootlearning.integration.MailIntegration;
 import springbootlearning.integration.WsRaspayIntegration;
 import springbootlearning.mapper.UserPaymentInfoMapper;
 import springbootlearning.mapper.wsraspay.CreditCardMapper;
@@ -27,12 +28,14 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
     private final UserRepository userRepository;
     private final UserPaymentInfoRepository userPaymentInfoRepository;
     private final WsRaspayIntegration wsRaspayIntegration;
+    private final MailIntegration mailIntegration;
 
     PaymentInfoServiceImpl(UserRepository userRepository, UserPaymentInfoRepository userPaymentInfoRepository,
-                           WsRaspayIntegration wsRaspayIntegration) {
+                           WsRaspayIntegration wsRaspayIntegration, MailIntegration mailIntegration) {
         this.userRepository = userRepository;
         this.userPaymentInfoRepository = userPaymentInfoRepository;
         this.wsRaspayIntegration = wsRaspayIntegration;
+        this.mailIntegration = mailIntegration;
     }
 
     @Override
@@ -61,8 +64,8 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
         if (succesPayment) {
             UserPaymentInfo userPaymentInfo = UserPaymentInfoMapper.fromDtoToEntity(paymentProcessDto.getUserPaymentInfoDto(), user);
             userPaymentInfoRepository.save(userPaymentInfo);
+            mailIntegration.sendMail(user.getEmail(), "mensagem para o usuario", "assunto da mensagem");
         }
-
         return null;
     }
 }
