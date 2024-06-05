@@ -3,11 +3,13 @@ package springbootlearning.service.impl;
 import org.springframework.stereotype.Service;
 import springbootlearning.dto.PaymentProcessDto;
 import springbootlearning.dto.wsraspay.CustomerDto;
+import springbootlearning.dto.wsraspay.OrderDto;
 import springbootlearning.exception.BusinessException;
 import springbootlearning.exception.NotFoundException;
 import springbootlearning.integration.WsRaspayIntegration;
 import springbootlearning.mapper.UserPaymentInfoMapper;
 import springbootlearning.mapper.wsraspay.CustomerMapper;
+import springbootlearning.mapper.wsraspay.OrderMapper;
 import springbootlearning.model.User;
 import springbootlearning.model.UserPaymentInfo;
 import springbootlearning.repository.UserPaymentInfoRepository;
@@ -46,7 +48,8 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
         // creates and updates the user in the integration
         CustomerDto customerDto = wsRaspayIntegration.createCustomer(CustomerMapper.build(user));
 
-
+        // create the payment request
+        OrderDto orderDto = wsRaspayIntegration.createOrder(OrderMapper.buildOrderDto(customerDto.getId(), paymentProcessDto));
 
 
         UserPaymentInfo userPaymentInfo = UserPaymentInfoMapper.fromDtoToEntity(paymentProcessDto.getUserPaymentInfoDto(), user);
