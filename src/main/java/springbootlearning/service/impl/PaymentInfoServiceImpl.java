@@ -65,7 +65,8 @@ public class PaymentInfoServiceImpl implements PaymentInfoService {
             UserPaymentInfo userPaymentInfo = UserPaymentInfoMapper.fromDtoToEntity(paymentProcessDto.getUserPaymentInfoDto(), user);
             userPaymentInfoRepository.save(userPaymentInfo);
             mailIntegration.sendMail(user.getEmail(), "mensagem para o usuario", "assunto da mensagem");
+            return true;
         }
-        return null;
+        return false;
     }
 }
