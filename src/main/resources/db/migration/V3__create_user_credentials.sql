@@ -1,0 +1,12 @@
+-- Criação da tabela user_credentials
+CREATE TABLE IF NOT EXISTS `user_credentials`
+(
+    `user_credentials_id`              INT       NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `username`                 CHAR(255) NOT NULL,
+    `password`                 CHAR(255) NOT NULL,
+    `user_type_id`          INT
+);
+
+-- Adicionando constraints foreign key
+ALTER TABLE `user_credentials`
+    ADD CONSTRAINT `fk_2_user_type_id` FOREIGN KEY (`user_type_id`) REFERENCES `user_type` (`user_type_id`);
